@@ -6,7 +6,7 @@ let sinhVienControllers = {
 
     arr.map((item) => {
       let trContent = `<tr>
-                         <td>${item.id} </td>
+                         <td>${item.idSv}</td>
                          <td>${item.name} </td>
                          <td>${item.email} </td>
                          <td>${item.getDiemTb()}</td>
@@ -27,7 +27,7 @@ let sinhVienControllers = {
   },
   layThongTinTuForm: function () {
     let tenSV = document.getElementById("txtTenSV").value.trim();
-    let maSV = document.getElementById("txtMaSV").value;
+    let maSV = document.getElementById("txtMaSV").value * 1;
     let mailSV = document.getElementById("txtEmail").value;
 
     let diemToan = document.getElementById("txtDiemToan").value;
@@ -40,7 +40,7 @@ let sinhVienControllers = {
       toan: diemToan,
       ly: diemLy,
       hoa: diemHoa,
-      id: maSV,
+      idSv: maSV,
     };
   },
 };

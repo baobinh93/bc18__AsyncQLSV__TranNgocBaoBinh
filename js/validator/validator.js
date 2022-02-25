@@ -64,4 +64,15 @@ let validator = {
     errEl.innerText = "Thang điểm 0-10";
     return false;
   },
+  kiemTraIdDaSuDung: function (value, arr, idErr) {
+    let errEl = document.getElementById(idErr);
+    if (arr.includes(value)) {
+      errEl.innerText = "Mã sinh viên đã được sử dụng";
+
+      return false;
+    } else {
+      errEl.innerText = "";
+      return true;
+    }
+  },
 };

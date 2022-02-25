@@ -1,10 +1,14 @@
+let dsMaSv = [];
+let idSinhVienCanSua;
 let renderTaleDSSV = () => {
   sinhVienService
     .layDanhSachSinhVien()
     .then((res) => {
       convertedArr = res.data.map((item) => {
-        let { name, email, toan, ly, hoa, id } = item;
-        return new SV(name, email, toan, ly, hoa, id);
+        let { name, email, toan, ly, hoa, id, idSv } = item;
+        dsMaSv.push(idSv * 1);
+
+        return new SV(name, email, toan, ly, hoa, idSv, id);
       });
       //console.log("convertedArr", convertedArr);
       sinhVienControllers.renderTable(convertedArr);
@@ -19,12 +23,17 @@ renderTaleDSSV();
 document.getElementById("btn-add").addEventListener("click", function () {
   let svOject = sinhVienControllers.layThongTinTuForm();
   let nameRemoveUnicode = remove_unicode(svOject.name);
+  // console.log(dsMaSv);
+  // console.log(svOject.idSv);
+  // console.log(dsMaSv.includes(svOject.idSv * 1));
+
   let isValid =
     validator.kiemTraDiem(svOject.toan, "spanToan") &
     validator.kiemTraDiem(svOject.ly, "spanLy") &
     validator.kiemTraDiem(svOject.hoa, "spanHoa") &
     validator.kiemTraEmail(svOject.email, "spanEmailSV") &
-    validator.kiemTraSo(svOject.id, "spanMaSV") &
+    (validator.kiemTraSo(svOject.idSv, "spanMaSV") &&
+      validator.kiemTraIdDaSuDung(svOject.idSv * 1, dsMaSv, "spanMaSV")) &
     (validator.kiemTraKiTu(nameRemoveUnicode, "spanTenSV") &&
       validator.kiemTraDoDai(nameRemoveUnicode, "spanTenSV"));
 
@@ -56,9 +65,10 @@ function xoaSV(id) {
 function suaSV(id) {
   sinhVienService.layChiTietSinhVien(id).then((res) => {
     let sinhVienCanSua = res.data;
-    console.log(sinhVienCanSua);
+    idSinhVienCanSua = id;
+
     document.getElementById("txtTenSV").value = sinhVienCanSua.name;
-    document.getElementById("txtMaSV").value = sinhVienCanSua.id;
+    document.getElementById("txtMaSV").value = sinhVienCanSua.idSv;
     document.getElementById("txtMaSV").disabled = true;
     document.getElementById("btn-add").disabled = true;
     document.getElementById("btn-update").disabled = false;
@@ -82,10 +92,11 @@ function resetForm() {
 
 function capNhatSV() {
   let svOject = sinhVienControllers.layThongTinTuForm();
+  svOject.id = idSinhVienCanSua;
   let nameRemoveUnicode = remove_unicode(svOject.name);
+  console.log();
   let isValid =
     validator.kiemTraEmail(svOject.email, "spanEmailSV") &
-    validator.kiemTraSo(svOject.id, "spanMaSV") &
     validator.kiemTraDiem(svOject.toan, "spanToan") &
     validator.kiemTraDiem(svOject.ly, "spanLy") &
     validator.kiemTraDiem(svOject.hoa, "spanHoa") &
