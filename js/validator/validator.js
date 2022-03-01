@@ -18,6 +18,10 @@ let validator = {
   kiemTraSo: function (value, idErr) {
     let errEl = document.getElementById(idErr);
     let parten = new RegExp("^(0|[1-9][0-9]*)$");
+    if (value == "") {
+      errEl.innerText = "Không được để trống";
+      return false;
+    }
     if (parten.test(value)) {
       errEl.innerText = "";
       return true;

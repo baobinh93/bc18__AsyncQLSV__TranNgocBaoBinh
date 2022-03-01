@@ -1,4 +1,5 @@
 let dsMaSv = [];
+let dsSv = [];
 let idSinhVienCanSua;
 let renderTaleDSSV = () => {
   sinhVienService
@@ -10,8 +11,9 @@ let renderTaleDSSV = () => {
 
         return new SV(name, email, toan, ly, hoa, idSv, id);
       });
-      //console.log("convertedArr", convertedArr);
+
       sinhVienControllers.renderTable(convertedArr);
+      dsSv = Array.from(convertedArr);
     })
     .catch((err) => {
       console.log("err", err);
@@ -131,3 +133,38 @@ function remove_unicode(str) {
 
   return str;
 }
+
+document.getElementById("txtSearch").addEventListener("keyup", function (e) {
+  console.log(e.target.value);
+  if (e.target.value && e.target.value.trim() != "") {
+    let dsIdSvPhuHop = timSvTheoTen(e.target.value);
+    let getAllRowOfStudentTable =
+      document.getElementsByClassName("student-for-search");
+    for (let row of getAllRowOfStudentTable) {
+      row.classList.remove("text-danger", "font-weight-bold");
+    }
+    console.log(document.getElementsByClassName("student-for-search").length);
+    dsIdSvPhuHop.forEach((id) => {
+      document
+        .getElementsByClassName("student-for-search")
+        [id].classList.add("text-danger", "font-weight-bold");
+    });
+  }
+});
+
+function timSvTheoTen(_string) {
+  let dsTenSv = dsSv.map((sv) => {
+    return remove_unicode(sv.name).trim();
+  });
+  let dsIdSvPhuHop = [];
+  dsTenSv.forEach((name, index) => {
+    if (name.includes(_string.trim())) {
+      dsIdSvPhuHop.push(index);
+    }
+  });
+  console.log(dsIdSvPhuHop);
+  return dsIdSvPhuHop;
+}
+// let test = "tran ngoc bao binh";
+// console.log(test.includes("bin"));
+//console.log(timSvTheoTen("binh"));

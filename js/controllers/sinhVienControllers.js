@@ -5,11 +5,11 @@ let sinhVienControllers = {
     let contentHTML = "";
 
     arr.map((item) => {
-      let trContent = `<tr>
-                         <td>${item.idSv}</td>
+      let trContent = `<tr  class="student-for-search">
+                         <td class="text-center">${item.idSv}</td>
                          <td>${item.name} </td>
                          <td>${item.email} </td>
-                         <td>${item.getDiemTb()}</td>
+                         <td class="text-center">${item.getDiemTb()}</td>
                          <td>
                          <button class="btn btn-success" onclick="suaSV(${
                            item.id
